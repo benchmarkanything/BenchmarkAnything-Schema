@@ -1,0 +1,5 @@
+.*
+!.gitignore
+BenchmarkAnything-Schema-*
+Debian_CPANTS.txt
+nytprof*
