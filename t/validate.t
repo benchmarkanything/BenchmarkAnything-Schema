@@ -68,7 +68,7 @@ foreach my $mode (qw(valid invalid)) {
 
                         is($got, $expected, "validated $mode $type against json schema: $file");
 
-                        diag "      $_" foreach $result->errors;
+                        diag " expected validation error: $_" foreach $result->errors;
                 }
         }
 }
