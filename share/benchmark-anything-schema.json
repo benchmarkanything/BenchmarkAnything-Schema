@@ -5,22 +5,27 @@
     "type": "object",
     "properties": {
         "BenchmarkAnythingData": {
-            "properties": {
-                "NAME": {
-                    "description": "Required name for a metric's data point",
-                    "type": "string"
-                },
-                "VALUE": {
-                    "description": "Required value for a metric's data point",
-                    "type": "number"
-                },
-                "UNIT": {
-                    "description": "Optional unit for a metric's data point",
-                    "type": "number"
+            "type": "array",
+            "required": true,
+            "items": {
+                "type" : "object",
+                "properties": {
+                    "NAME": {
+                        "type": "string",
+                        "required": true,
+                        "description": "Required name for a metric's data point"
+                    },
+                    "VALUE": {
+                        "type": "number",
+                        "required": true,
+                        "description": "Required value for a metric's data point"
+                    },
+                    "UNIT": {
+                        "type": "string",
+                        "description": "Optional unit for a metric's data point"
+                    }
                 }
-            },
-            "required": ["NAME", "VALUE"]
+            }
         }
-    },
-    "required": ["BenchmarkAnythingData"]
+    }
 }
