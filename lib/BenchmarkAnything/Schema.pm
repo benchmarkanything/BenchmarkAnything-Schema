@@ -4,7 +4,7 @@ package BenchmarkAnything::Schema;
 # ABSTRACT: Tooling to handle the "BenchmarkAnything" schema
 
 sub valid_json_schema {
-    my ($data_or_json, $options) = @_;
+    my ($data_or_json) = @_;
 
     require File::Slurp;
     require File::ShareDir;
@@ -32,11 +32,6 @@ sub valid_json_schema {
     my $schema      = JSON::MaybeXS::decode_json($schema_json);
     my $validator   = JSON::Schema->new($schema);
     my $result      = $validator->validate($data);
-
-    if (not $result and $options->{verbose}) {
-        print STDERR "Schema errors\n";
-        print STDERR " - $_\n" foreach $result->errors;
-    }
 
     return $result;
 }
