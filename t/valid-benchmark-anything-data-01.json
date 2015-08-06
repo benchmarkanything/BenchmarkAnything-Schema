@@ -1,0 +1,22 @@
+{
+    "BenchmarkAnythingData" : [
+        {
+            "NAME"     : "benchmarkanything.test.metric",
+            "VALUE"    : 27.34,
+            "compiler" : "gcc",
+            "keyword"  : "affe"
+        },
+        {
+            "NAME"     : "benchmarkanything.test.metric",
+            "VALUE"    : 34.56789,
+            "compiler" : "icc",
+            "keyword"  : "zomtec"
+        },
+        {
+            "NAME"     : "benchmarkanything.test.metric",
+            "VALUE"    : 40,
+            "compiler" : "gcc",
+            "keyword"  : "birne"
+        }
+    ]
+}
