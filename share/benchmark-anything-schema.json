@@ -1,0 +1,26 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "BenchmarkAnything",
+    "description": "A schema describing benchmark results",
+    "type": "object",
+    "properties": {
+        "BenchmarkAnythingData": {
+            "properties": {
+                "NAME": {
+                    "description": "Required name for a metric's data point",
+                    "type": "string"
+                },
+                "VALUE": {
+                    "description": "Required value for a metric's data point",
+                    "type": "number"
+                },
+                "UNIT": {
+                    "description": "Optional unit for a metric's data point",
+                    "type": "number"
+                }
+            },
+            "required": ["NAME", "VALUE"]
+        }
+    },
+    "required": ["BenchmarkAnythingData"]
+}
