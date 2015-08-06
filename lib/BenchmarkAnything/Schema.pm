@@ -13,7 +13,8 @@ sub valid_json_schema {
     require Scalar::Util;
 
     my $data;
-    if (Scalar::Util::reftype($data_or_json) and Scalar::Util::reftype($data_or_json) =~ /^HASH|ARRAY$/) {
+    my $ref = Scalar::Util::reftype($data_or_json);
+    if ($ref and $ref =~ /^HASH|ARRAY$/) {
         $data = $data_or_json;
     } else {
         $data = JSON::MaybeXS::decode_json($data_or_json);
