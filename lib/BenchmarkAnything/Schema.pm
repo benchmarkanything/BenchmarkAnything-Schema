@@ -12,6 +12,7 @@ sub valid_json_schema {
     require JSON::Schema;
     require Scalar::Util;
 
+    # decode JSON unless already given a HASH or ARRAY reference
     my $data;
     my $ref = Scalar::Util::reftype($data_or_json);
     if ($ref and $ref =~ /^HASH|ARRAY$/) {
@@ -20,15 +21,8 @@ sub valid_json_schema {
         $data = JSON::MaybeXS::decode_json($data_or_json);
     }
 
-    my $name = 'benchmark-anything-schema.json';
-    my $fullname;
-
-    # look into local repo's share/ (development) or final location (cpan installed)
-    if (not $fullname = File::ShareDir::dist_file('BenchmarkAnything-Schema', $name)) {
-        $fullname = "share/$name";
-    }
-
-    my $schema_json = File::Slurp::slurp($fullname);
+    my $schema_file = File::ShareDir::dist_file('BenchmarkAnything-Schema', 'benchmark-anything-schema.json');
+    my $schema_json = File::Slurp::read_file($schema_file);
     my $schema      = JSON::MaybeXS::decode_json($schema_json);
     my $validator   = JSON::Schema->new($schema);
     my $result      = $validator->validate($data);
