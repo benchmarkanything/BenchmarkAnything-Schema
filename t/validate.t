@@ -1,3 +1,6 @@
+use strict;
+use warnings;
+
 use Test::More 0.88;
 
 require BenchmarkAnything::Schema;
@@ -7,28 +10,67 @@ require File::Slurp;
 
 # prefix "B.A.D." == "Benchmark Anything Data"
 
-my $bad_json = File::Slurp::slurp('t/valid-benchmark-anything-data-01.json');
-my $bad      = JSON::MaybeXS::decode_json($bad_json);
+# valid example files
+my %json_files = (
+                  valid => [qw(
+                                      t/valid-benchmark-anything-data-01.json
+                                      t/valid-benchmark-anything-data-02.json
+                                      t/valid-benchmark-anything-data-03.json
+                             )
+                           ],
+                  invalid => [qw(
+                                        t/invalid-benchmark-anything-data-01.json
+                                        t/invalid-benchmark-anything-data-02.json
+                                        t/invalid-benchmark-anything-data-03.json
+                                        t/invalid-benchmark-anything-data-04.json
+                                        t/invalid-benchmark-anything-data-05.json
+                                        t/invalid-benchmark-anything-data-06.json
+                               )
+                             ],
+                 );
+
+my $reference_file = 't/valid-benchmark-anything-data-01.json';
+my $reference_json = File::Slurp::slurp($reference_file);
+my $reference      = JSON::MaybeXS::decode_json($reference_json);
 
 # --- basic structure validation before applying json schema ---
 
-is (scalar(@{$bad->{BenchmarkAnythingData}}), 3,    "intro key with correct sub entries");
+is (scalar(@{$reference->{BenchmarkAnythingData}}), 3,    "intro key with correct sub entries");
 
-is ($bad->{BenchmarkAnythingData}[0]{NAME},     "benchmarkanything.test.metric", "entry 0 - NAME");
-is ($bad->{BenchmarkAnythingData}[0]{VALUE},    27.34,                           "entry 0 - VALUE");
-is ($bad->{BenchmarkAnythingData}[0]{keyword},  "affe",                          "entry 0 - keyword");
+is ($reference->{BenchmarkAnythingData}[0]{NAME},     "benchmarkanything.test.metric", "entry 0 - NAME");
+is ($reference->{BenchmarkAnythingData}[0]{VALUE},    27.34,                           "entry 0 - VALUE");
+is ($reference->{BenchmarkAnythingData}[0]{keyword},  "affe",                          "entry 0 - keyword");
 
-is ($bad->{BenchmarkAnythingData}[1]{NAME},     "benchmarkanything.test.metric", "entry 1 - NAME");
-is ($bad->{BenchmarkAnythingData}[1]{VALUE},    34.56789,                        "entry 1 - VALUE");
-is ($bad->{BenchmarkAnythingData}[1]{keyword},  "zomtec",                        "entry 1 - keyword");
+is ($reference->{BenchmarkAnythingData}[1]{NAME},     "benchmarkanything.test.metric", "entry 1 - NAME");
+is ($reference->{BenchmarkAnythingData}[1]{VALUE},    34.56789,                        "entry 1 - VALUE");
+is ($reference->{BenchmarkAnythingData}[1]{keyword},  "zomtec",                        "entry 1 - keyword");
 
-is ($bad->{BenchmarkAnythingData}[2]{NAME},     "benchmarkanything.test.metric", "entry 2 - NAME");
-is ($bad->{BenchmarkAnythingData}[2]{VALUE},    40,                              "entry 2 - VALUE");
-is ($bad->{BenchmarkAnythingData}[2]{keyword},  "birne",                         "entry 2 - keyword");
+is ($reference->{BenchmarkAnythingData}[2]{NAME},     "benchmarkanything.test.metric", "entry 2 - NAME");
+is ($reference->{BenchmarkAnythingData}[2]{VALUE},    40,                              "entry 2 - VALUE");
+is ($reference->{BenchmarkAnythingData}[2]{keyword},  "birne",                         "entry 2 - keyword");
 
 # --- json schema validation ---
 
-ok(BenchmarkAnything::Schema::valid_json_schema($bad),      "validated DATA against json schema");
-ok(BenchmarkAnything::Schema::valid_json_schema($bad_json), "validated JSON against json schema");
+foreach my $mode (qw(valid invalid)) {
+        diag "validate $mode files";
+        foreach my $file (@{$json_files{$mode}}) {
+                my $json = File::Slurp::slurp($file);
+                my %input = (
+                             json => $json,
+                             data => JSON::MaybeXS::decode_json($json)
+                            );
+                foreach my $type (qw(json data)) {
+                        my $result = BenchmarkAnything::Schema::valid_json_schema($input{$type});
+
+                        # stringify overloaded magic away for the is() function
+                        my $got      = "".$result;
+                        my $expected = "".($mode eq "valid" ? 1 : '');
+
+                        is($got, $expected, "validated $mode $type against json schema: $file");
+
+                        diag "      $_" foreach $result->errors;
+                }
+        }
+}
 
 done_testing;
