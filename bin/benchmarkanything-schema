@@ -42,14 +42,7 @@ sub validate :Help(validate if data conforms to BenchmarkAnything json schema)
         _getopt($c);
 
         my $file    = $c->argv->[1] || '-';
-        my $data    = _read_in( $c, $file );
-
-        my $out = 1;
-        foreach my $datum (ref $data eq ref [] ? @$data : $data) {
-            my $result = _validate($c, $datum);
-            $out &&= $result;
-        }
-        return $out;
+        exit (_validate($c, _read_in( $c, $file )) ? 0 : 1);
 }
 
 sub default { validate(@_) }
