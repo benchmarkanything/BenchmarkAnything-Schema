@@ -41,7 +41,7 @@ sub validate :Help(validate if data conforms to BenchmarkAnything json schema)
 
         _getopt($c);
 
-        my $file    = $c->argv->[1] || '-';
+        my $file = $c->argv->[0] || '-';
         exit (_validate($c, _read_in( $c, $file )) ? 0 : 1);
 }
 
