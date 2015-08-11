@@ -27,12 +27,12 @@ sub help
 {
         my ($c) = @_;
 
-        return "benchmarkanything-schema [-ios] [--fb] [ --fi]
+        return qq{benchmarkanything-schema [-i|--intype] <FILENAME>
 
         -i
         --intype         - input format
                            [json(default), yaml, dumper, xml, tap, ini]
-";
+};
 }
 
 sub validate :Help(validate if data conforms to BenchmarkAnything json schema)
@@ -69,14 +69,14 @@ sub _read_in
                 }
                 else
                 {
-                        open (my $FH, "<", $file) or die "dpath: cannot open input file $file.\n";
+                        open (my $FH, "<", $file) or die "benchmarkanything-schema: cannot open input file $file.\n";
                         $filecontent = <$FH>;
                         close $FH;
                 }
         }
 
         if (not defined $filecontent or $filecontent !~ /[^\s\t\r\n]/ms) {
-                die "dpath: no meaningful input to read.\n";
+                die "benchmarkanything-schema: no meaningful input to read.\n";
         }
 
         if ($intype eq "yaml") {
@@ -115,7 +115,7 @@ sub _read_in
         }
         else
         {
-                die "dpath: unrecognized input format: $intype.\n";
+                die "benchmarkanything-schema: unrecognized input format: $intype.\n";
         }
         return $data;
 }
@@ -145,37 +145,28 @@ __END__
 
 =head1 SYNOPSIS
 
-Query some input data with a DPath to stdout.
+Validate data against BenchmarkAnything schema, see http://benchmarkanything.org/
 
 Default data format (in and out) is JSON, other formats can be
 specified.
 
-  $ dpath '//some/dpath' data.json
+  $ benchmarkanything-schema validate data.json
 
 Use it as filter:
 
   $ benchmarkanything-schema validate < data.json
-  $ cat data.yaml | benchmarkanything-schema validate
+  $ cat data.json | benchmarkanything-schema validate
 
 Input is YAML:
 
-  $ dpath -i yaml '//some/dpath' data.yaml
-
-Input is INI:
-
-  $ dpath -i ini '//some/dpath' data.ini
-
-Input is TAP:
-
-  $ dpath -i tap '//some/dpath' data.tap
-  $ perl t/some_test.t | dpath -i tap '//tests_planned'
+  $ benchmarkanything-schema validate -i yaml data.yaml
 
 =head2 Input formats
 
 The following B<input formats> are allowed, with their according
 modules used to convert the input into a data structure:
 
- yaml   - YAML::Syck (default)
+ yaml   - YAML::Any (default)
  json   - JSON
  xml    - XML::Simple
  ini    - Config::INI::Serializer
