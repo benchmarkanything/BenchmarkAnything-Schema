@@ -1,4 +1,6 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
-        - Initial repository
+        - Initial release - CPAN DAY - 2015-08-16
+        - schema definition with tools to handle and validate
+          BenchmarkAnything data - see http://benchmarkanything.org/
