@@ -1,6 +1,8 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+
+0.002     2015-09-28
         - RT#107315 - replace File::Slurp with File::Slurper
 
 0.001     2015-08-16
