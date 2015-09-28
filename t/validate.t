@@ -6,7 +6,7 @@ use Test::More 0.88;
 require BenchmarkAnything::Schema;
 require JSON::MaybeXS;
 require JSON::Schema;
-require File::Slurp;
+require File::Slurper;
 
 # prefix "B.A.D." == "Benchmark Anything Data"
 
@@ -30,7 +30,7 @@ my %json_files = (
                  );
 
 my $reference_file = 't/valid-benchmark-anything-data-01.json';
-my $reference_json = File::Slurp::slurp($reference_file);
+my $reference_json = File::Slurper::read_text($reference_file);
 my $reference      = JSON::MaybeXS::decode_json($reference_json);
 
 # --- basic structure validation before applying json schema ---
@@ -54,7 +54,7 @@ is ($reference->{BenchmarkAnythingData}[2]{keyword},  "birne",                  
 foreach my $mode (qw(valid invalid)) {
         diag "validate $mode files";
         foreach my $file (@{$json_files{$mode}}) {
-                my $json = File::Slurp::slurp($file);
+                my $json = File::Slurper::read_text($file);
                 my %input = (
                              json => $json,
                              data => JSON::MaybeXS::decode_json($json)
