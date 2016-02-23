@@ -1,6 +1,8 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+
+0.004     2016-02-23
         - accept non-number VALUEs since the backend allows it
 
 0.002     2015-09-28
