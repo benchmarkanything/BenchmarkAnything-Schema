@@ -16,7 +16,7 @@
                         "description": "Required name for a metric's data point"
                     },
                     "VALUE": {
-                        "type": "number",
+                        "type": "string",
                         "required": true,
                         "description": "Required value for a metric's data point"
                     },

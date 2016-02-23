@@ -1,6 +1,7 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+        - accept non-number VALUEs since the backend allows it
 
 0.002     2015-09-28
         - RT#107315 - replace File::Slurp with File::Slurper

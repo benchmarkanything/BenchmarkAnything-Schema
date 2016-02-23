@@ -23,8 +23,6 @@ my %json_files = (
                                         t/invalid-benchmark-anything-data-02.json
                                         t/invalid-benchmark-anything-data-03.json
                                         t/invalid-benchmark-anything-data-04.json
-                                        t/invalid-benchmark-anything-data-05.json
-                                        t/invalid-benchmark-anything-data-06.json
                                )
                              ],
                  );
